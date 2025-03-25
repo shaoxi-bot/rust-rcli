@@ -13,14 +13,26 @@ pub struct Opts {
 pub enum SubCommand {
     #[command(name = "csv", about = "Show CSV, or convert CSV to other formats")]
     Csv(CsvOpts),
+
+    #[command(name = "genpass", about = "Generate a random password")]
+    GenPass(GenPassOpts),
 }
 
-#[derive(Debug, Clone, Copy)]
-pub enum OutputFormat {
-    Json,
-    Yaml,
-    // Toml,
+#[derive(Debug, Parser)]
+pub struct GenPassOpts {
+    #[arg(short, long, default_value_t = 16)]
+    pub length: u8,
+    #[arg(long, default_value_t = true)]
+    pub uppercase: bool,
+    #[arg(long, default_value_t = true)]
+    pub lowercase: bool,
+    #[arg(long, default_value_t = true)]
+    pub numbers: bool,
+    #[arg(long, default_value_t = true)]
+    pub symbol: bool,
 }
+
+// -------------------------------------------- CSV -----------------------------------------------
 
 #[derive(Debug, Parser)]
 pub struct CsvOpts {
@@ -28,7 +40,7 @@ pub struct CsvOpts {
     pub input: String,
 
     // #[arg(short, long, default_value = "output.json")]
-    #[arg(short, long )]
+    #[arg(short, long)]
     pub output: Option<String>,
 
     #[arg(short, long, value_parser = parse_format, default_value = "json")]
@@ -40,6 +52,14 @@ pub struct CsvOpts {
     #[arg(long, default_value_t = true)]
     pub header: bool,
 }
+
+#[derive(Debug, Clone, Copy)]
+pub enum OutputFormat {
+    Json,
+    Yaml,
+    // Toml,
+}
+
 
 pub fn verify_input_file(filename: &str) -> Result<String, &'static str> {
     if std::path::Path::new(filename).exists() {
