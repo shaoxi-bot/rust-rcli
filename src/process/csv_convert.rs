@@ -5,7 +5,9 @@ use csv::Reader;
 use serde::{Serialize, Deserialize};
 use serde_json::{self};
 
-use crate::opts::OutputFormat;
+use crate::cli::csv::OutputFormat;
+
+// use crate::cli::opts::OutputFormat;
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "PascalCase")] // 重命名规则

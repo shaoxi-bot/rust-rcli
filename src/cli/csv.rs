@@ -1,38 +1,7 @@
+
 use std::str::FromStr;
 
 use clap::Parser;
-
-#[derive(Debug, Parser)]
-#[command(name = "rcli", version, author, about, long_about = None)]
-pub struct Opts {
-    #[command(subcommand)]
-    pub cmd: SubCommand,
-}
-
-#[derive(Debug, Parser)]
-pub enum SubCommand {
-    #[command(name = "csv", about = "Show CSV, or convert CSV to other formats")]
-    Csv(CsvOpts),
-
-    #[command(name = "genpass", about = "Generate a random password")]
-    GenPass(GenPassOpts),
-}
-
-#[derive(Debug, Parser)]
-pub struct GenPassOpts {
-    #[arg(short, long, default_value_t = 16)]
-    pub length: u8,
-    #[arg(long, default_value_t = true)]
-    pub uppercase: bool,
-    #[arg(long, default_value_t = true)]
-    pub lowercase: bool,
-    #[arg(long, default_value_t = true)]
-    pub numbers: bool,
-    #[arg(long, default_value_t = true)]
-    pub symbol: bool,
-}
-
-// -------------------------------------------- CSV -----------------------------------------------
 
 #[derive(Debug, Parser)]
 pub struct CsvOpts {
@@ -59,7 +28,6 @@ pub enum OutputFormat {
     Yaml,
     // Toml,
 }
-
 
 pub fn verify_input_file(filename: &str) -> Result<String, &'static str> {
     if std::path::Path::new(filename).exists() {
